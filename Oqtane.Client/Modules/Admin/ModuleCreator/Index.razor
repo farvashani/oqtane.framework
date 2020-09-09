@@ -1,4 +1,5 @@
 ﻿@namespace Oqtane.Modules.Admin.ModuleCreator
+@using System.IO
 @inherits ModuleBase
 @inject NavigationManager NavigationManager
 @inject IModuleDefinitionService ModuleDefinitionService
@@ -37,8 +38,8 @@
             <td>
                 <select id="template" class="form-control" @onchange="(e => TemplateChanged(e))">
                     <option value="-">&lt;Select Template&gt;</option>
-                    <option value="internal">Internal</option>
-                    <option value="external">External</option>
+                    <option value="Internal">Internal</option>
+                    <option value="External">External</option>
                 </select>
             </td>
         </tr>
@@ -117,7 +118,7 @@
                 Dictionary<string, string> systeminfo = await SystemService.GetSystemInfoAsync();
                 if (systeminfo != null)
                 {
-                    string[] path = systeminfo["serverpath"].Split('\\');
+                    string[] path = systeminfo["serverpath"].Split(Path.DirectorySeparatorChar);
                     if (_template == "internal")
                     {
                         _location = string.Join("\\", path, 0, path.Length - 1) + "\\Oqtane.Client\\Modules\\" + _owner + "." + _module;
