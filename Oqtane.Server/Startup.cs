@@ -34,8 +34,15 @@ namespace Oqtane
         public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                .SetBasePath(env.ContentRootPath);
+            if (env.IsDevelopment())
+             {
+                builder.AddJsonFile($"appsettings.Development.json", optional: false, reloadOnChange: true);
+             }
+             else
+             {
+                builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+             }
             Configuration = builder.Build();
 
             _runtime = (Configuration.GetSection("Runtime").Value == "WebAssembly") ? Runtime.WebAssembly : Runtime.Server;
